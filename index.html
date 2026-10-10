@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>고양이의 길 — 프로토타입</title>
+<title>묘적 — 프로토타입</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -464,6 +464,9 @@
     transition:opacity .9s ease;
   }
   #start-overlay.opening.gone{ display:none; }
+  #home-title{ cursor:pointer; transition:opacity .15s, transform .15s; }
+  #home-title:hover{ opacity:.75; transform:translateY(-1px); }
+  #home-title:focus-visible{ outline:2px solid var(--coral); outline-offset:4px; border-radius:6px; }
   .op-sky{
     position:absolute; inset:0; overflow:hidden;
     background:linear-gradient(180deg,#241B58 0%,#5A3A97 28%,#C75B8C 58%,#FF9E69 82%,#FFD08A 100%);
@@ -664,8 +667,6 @@
   .hunt-modal{ width:min(780px,94%); padding:16px 18px 14px; }
   .hunt-modal h2{ margin:0 0 2px; }
   .hunt-modal p{ margin:0 0 8px; font-size:12px; }
-  .hunt-timer{ height:8px; border-radius:6px; background:#EDEAFB; overflow:hidden; margin-bottom:8px; }
-  .hunt-timer > div{ height:100%; width:100%; background:linear-gradient(90deg,#FF8A65,#E86FA8); }
   .hunt-field{ position:relative; height:min(46vh,380px); border-radius:14px; overflow:hidden; cursor:crosshair; touch-action:none; user-select:none; box-shadow:inset 0 0 0 2px rgba(60,40,120,.12); }
   .hunt-field.shake{ animation:hunt-shake .22s ease; }
   @keyframes hunt-shake{ 0%,100%{transform:translate(0,0);} 25%{transform:translate(-4px,2px);} 50%{transform:translate(4px,-2px);} 75%{transform:translate(-2px,2px);} }
@@ -691,7 +692,29 @@
     100%{ transform:rotate(32deg) scaleY(1); opacity:0; }
   }
   /* ---------- 눈치 싸움 ---------- */
-  .duel-modal{ width:min(560px,94%); }
+  .duel-modal{ width:min(780px,95%); }
+  .duel-layout{ display:flex; gap:14px; align-items:stretch; }
+  .duel-main{ flex:1; min-width:0; }
+  .duel-rulebox{ width:196px; flex:none; background:#F4F1FF; border-radius:14px; padding:12px 12px 10px; text-align:left; align-self:flex-start; }
+  .duel-rulebox h4{ margin:0 0 8px; font-size:13px; color:var(--purple-deep); }
+  .duel-rulebox .rr{ display:flex; align-items:center; justify-content:space-between; gap:4px; background:#fff; border-radius:10px; padding:7px 8px; margin-bottom:6px; font-size:12px; font-weight:700; }
+  .duel-rulebox .rr .lt{ color:#B2402E; } .duel-rulebox .rr .gt{ color:#1F7A42; }
+  .duel-rulebox .rr i{ font-style:normal; color:var(--mute); font-weight:800; }
+  .duel-rulebox small{ display:block; font-size:10.5px; color:var(--mute); line-height:1.5; margin-top:4px; }
+  .duel-btn .kb{ display:inline-block; font-size:10px; font-weight:800; background:#EDEAFB; color:var(--purple-deep); border-radius:6px; padding:0 6px; margin-bottom:2px; }
+  @media (max-width:640px){ .duel-layout{ flex-direction:column; } .duel-rulebox{ width:auto; align-self:stretch; order:2; } }
+  /* 조공 도감 */
+  .tribute-box{ margin:8px 0 0; background:#FFF7E6; border:2px solid #F6E2B3; border-radius:14px; padding:8px 12px 9px; text-align:left; }
+  .tribute-box h4{ margin:0 0 5px; font-size:12px; color:#9A6A12; }
+  .tribute-chips{ display:flex; flex-wrap:wrap; gap:5px; }
+  .tchip{ font-size:11.5px; padding:3px 9px; border-radius:20px; background:#fff; border:1.5px solid #F0D79A; color:#6A4A12; font-weight:700; }
+  .tchip.q{ background:#F4F2FA; border:1.5px dashed #CFC8E6; color:#9A93BD; }
+  .tchip.new{ animation:tchip-pop .7s ease; }
+  @keyframes tchip-pop{ 0%{ transform:scale(1.6); box-shadow:0 0 0 0 rgba(255,190,60,.8);} 100%{ transform:scale(1); box-shadow:0 0 0 10px rgba(255,190,60,0);} }
+  .op-index .tchip{ background:rgba(255,255,255,.14); border:0; color:#fff; font-weight:400; }
+  .op-index .tchip.q{ background:rgba(255,255,255,.08); color:#CFC4E6; }
+  .hunt-pips .miss{ margin-left:14px; }
+  .hunt-pips .miss.off{ opacity:.22; filter:grayscale(1); }
   .duel-score{ display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700; color:var(--purple-deep); margin:2px 4px 10px; }
   .duel-score .pips{ letter-spacing:3px; font-size:15px; }
   .duel-cue{ background:#FFF3EC; border-radius:14px; padding:12px 14px; font-size:13px; color:#6A4A3A; min-height:62px; line-height:1.55; }
@@ -706,7 +729,6 @@
   .duel-btn .ic{ display:block; font-size:28px; }
   .duel-btn b{ display:block; font-size:13px; margin-top:2px; }
   .duel-btn span{ display:block; font-size:10.5px; color:var(--mute); margin-top:1px; }
-  .duel-rule{ margin-top:10px; font-size:11px; color:var(--mute); }
 </style>
 </head>
 <body>
@@ -723,7 +745,7 @@
 
   <header>
     <div class="title-block">
-      <h1>🐾 고양이의 길</h1>
+      <h1 id="home-title" role="button" tabindex="0" title="처음 화면으로 돌아가기">🐾 묘적</h1>
       <span class="stage-badge" id="stage-badge">성장기</span>
       <span class="day-count" id="day-count">1일차</span>
       <button class="dex-btn" id="dex-btn">📖 도감</button>
@@ -792,6 +814,8 @@
         </div>
       </div>
     </div>
+
+    <div class="tribute-box" id="tribute-box" style="display:none;"><h4>👑 받은 조공 <span id="tribute-count"></span></h4><div class="tribute-chips" id="tribute-chips"></div></div>
 
     <div class="hint-bar">
       <span><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> / <kbd>WASD</kbd> 이동</span>
@@ -932,10 +956,13 @@
             <span class="note">배고픔이 채워져요.</span></div>
           <div class="grp"><b>🧶 놀거리 · 사냥감</b>
             <span class="it" title="재미도가 올라요">🖱️ 쥐 장난감</span><span class="it" title="재미도가 올라요">🌿 강아지풀</span><span class="it" title="작은 사냥감">🦗 벌레</span><span class="it" title="큰 사냥감. 놓칠 수도 있어요">🐦 참새</span>
-            <span class="note">재미도가 올라요. 🦗벌레·🐦참새는 도망 다니는 걸 클릭해 발톱으로 잡는 사냥 미니게임! 사냥감은 특별한 용도가 있을지도…</span></div>
+            <span class="note">재미도가 올라요. 도망 다니는 사냥감을 클릭해 발톱으로 잡는 미니게임! 🦗벌레(느림, 3번 공격하면 잡음) &lt; 🐦참새(빠름, 3번 공격해야 하는데 빗나감 2번이면 놓침) 사냥감은 특별한 용도가 있을지도…</span></div>
           <div class="grp"><b>⚠️ 위험한 것</b>
             <span class="it bad" title="쫓아와요! 닿으면 배고픔이 닳아요">🐕 사나운 개</span><span class="it bad" title="쫓아와요! 닿으면 배고픔이 닳아요">🧍 들이대는 사람</span><span class="it bad" title="쫓아와요! 닿으면 배고픔이 닳아요">😘 뽀뽀하려는 사람</span><span class="it bad" title="밟으면 한동안 느려져요">🪤 쥐덫</span><span class="it bad" title="위험도가 올라요">🐝 꽃밭의 벌</span><span class="it bad" title="먹으면 위험해요">🥫 상한 캔</span>
             <span class="note">쫓아오는 것에 닿으면 배고픔이 닳고, 덫은 밟으면 느려져요.</span></div>
+          <div class="grp"><b>👑 조공 도감 (왕이 되면 매일 받아요)</b>
+            <div class="tribute-chips" id="op-tribute-chips"></div>
+            <span class="note">받은 조공은 ❓가 풀려요. 기록은 이 브라우저에 남아요.</span></div>
           <div class="grp"><b>💞 특별한 만남</b>
             <span class="it love" title="마음을 나눈 상대. 하트로 인연이 자라요">😻 연인</span><span class="it love" title="아주 귀한 선물">🍬 츄르</span>
             <span class="note">연인과의 인연은 하트로 자라요.</span></div>
@@ -964,7 +991,6 @@
     <div class="modal hunt-modal">
       <h2 id="hunt-title">사냥!</h2>
       <p id="hunt-sub">움직이는 사냥감을 클릭해 발톱으로 공격하세요!</p>
-      <div class="hunt-timer"><div id="hunt-timer-bar"></div></div>
       <div class="hunt-field" id="hunt-field"><div class="hunt-prey" id="hunt-prey"><span id="hunt-prey-ic"></span></div></div>
       <div class="hunt-pips" id="hunt-pips"></div>
     </div>
@@ -974,15 +1000,25 @@
   <div class="overlay" id="duel-overlay">
     <div class="modal duel-modal">
       <h2 id="duel-title">🐾 눈치 싸움</h2>
-      <div class="duel-score"><span>나 <span class="pips" id="duel-me"></span></span><span id="duel-goal"></span><span><span class="pips" id="duel-foe"></span> <span id="duel-foe-name">상대</span></span></div>
-      <div class="duel-cue" id="duel-cue"></div>
-      <div class="duel-reveal" id="duel-reveal"></div>
-      <div class="duel-opts">
-        <button class="duel-btn" data-move="growl" type="button"><span class="ic">🗣️</span><b>으르렁</b><span>기선 제압</span></button>
-        <button class="duel-btn" data-move="stare" type="button"><span class="ic">👁️</span><b>눈 쳐다보기</b><span>기싸움</span></button>
-        <button class="duel-btn" data-move="fight" type="button"><span class="ic">⚔️</span><b>싸우기</b><span>정면 돌파</span></button>
+      <div class="duel-layout">
+        <div class="duel-main">
+          <div class="duel-score"><span>나 <span class="pips" id="duel-me"></span></span><span id="duel-goal"></span><span><span class="pips" id="duel-foe"></span> <span id="duel-foe-name">상대</span></span></div>
+          <div class="duel-cue" id="duel-cue"></div>
+          <div class="duel-reveal" id="duel-reveal"></div>
+          <div class="duel-opts">
+            <button class="duel-btn" data-move="stare" type="button"><span class="kb">1</span><span class="ic">👁️</span><b>눈 쳐다보기</b><span>기싸움</span></button>
+            <button class="duel-btn" data-move="growl" type="button"><span class="kb">2</span><span class="ic">🗣️</span><b>으르렁</b><span>기선 제압</span></button>
+            <button class="duel-btn" data-move="fight" type="button"><span class="kb">3</span><span class="ic">⚔️</span><b>싸우기</b><span>정면 돌파</span></button>
+          </div>
+        </div>
+        <aside class="duel-rulebox" aria-label="승부 규칙">
+          <h4>📜 승부 규칙</h4>
+          <div class="rr"><span class="lt">1 👁️</span><i>&lt;</i><span class="gt">2 🗣️</span></div>
+          <div class="rr"><span class="lt">2 🗣️</span><i>&lt;</i><span class="gt">3 ⚔️</span></div>
+          <div class="rr"><span class="lt">3 ⚔️</span><i>&lt;</i><span class="gt">1 👁️</span></div>
+          <small>오른쪽이 이겨요. 같은 수는 무승부!<br>숫자 키 1·2·3으로도 고를 수 있어요.<br>상대의 몸짓은 <b>가끔 거짓</b>이에요.</small>
+        </aside>
       </div>
-      <div class="duel-rule">⚔️ 싸우기 &gt; 🗣️ 으르렁 &gt; 👁️ 눈 쳐다보기 &gt; ⚔️ 싸우기 &nbsp;·&nbsp; 상대의 몸짓을 읽어 보세요 (가끔 거짓이에요)</div>
     </div>
   </div>
 
@@ -1007,6 +1043,7 @@
       <h2>📖 고양이 엔딩 도감</h2>
       <div class="dex-count" id="dex-count"></div>
       <div class="dex-grid" id="dex-grid"></div>
+      <div class="tribute-box" id="dex-tribute-box"><h4>👑 조공 도감 <span id="dex-tribute-count"></span></h4><div class="tribute-chips" id="dex-tribute-chips"></div></div>
       <div class="dex-actions">
         <button class="restart-btn ghost" id="dex-reset-btn">기록 초기화</button>
         <button class="restart-btn" id="dex-close-btn">닫기</button>
@@ -1115,8 +1152,8 @@
     { key:"catgrass", icon:"🌿", label:"강아지풀", tier:"common", hunger:0, fun:+8, affection:0, weight:-1, risk:-1, exercise:true, msg:"강아지풀을 살랑살랑 흔들며 놀았다" , places:["park","lot","housing"] },
     { key:"trap",     icon:"🪤", label:"쥐덫", tier:"rare", hunger:0, fun:+10, affection:0, weight:0, risk:+18, bad:true, msg:"쥐덫 근처에서 깜짝 놀랐다! 심장이 쫄깃했다" , places:["lot","road"] },
     { key:"dog",      icon:"🐕", label:"사나운 개", tier:"rare", hunger:-6, fun:+8, affection:0, weight:-2, risk:+16, bad:true, exercise:true, msg:"사나운 개가 짖으며 쫓아와 정신없이 도망쳤다!" , places:["road","park"] },
-    { key:"bug",      icon:"🦗", label:"벌레", tier:"uncommon", hunger:0, fun:+4, affection:+12, weight:-2, risk:-1, exercise:true, msg:"벌레를 사냥해 주인에게 자랑스럽게 물어다 줬다", msgUnadopted:"벌레를 사냥했다. 아직 물어다 줄 주인은 없다" , places:["lot","park","stream"] },
-    { key:"bird",     icon:"🐦", label:"참새", tier:"rare", hunger:0, fun:+2, affection:+22, weight:-3, risk:-1, exercise:true, msg:"참새를 사냥해 선물했다! 주인이 놀라며 좋아했다", msgUnadopted:"참새를 사냥했다. 자랑할 상대가 없어 조금 허전하다" , places:["park","stream"] },
+    { key:"bug",      icon:"🦗", label:"벌레", tier:"uncommon", hunger:0, fun:+15, affection:+12, weight:-2, risk:-1, exercise:true, msg:"벌레를 사냥해 주인에게 자랑스럽게 물어다 줬다", msgUnadopted:"벌레를 사냥했다. 아직 물어다 줄 주인은 없다" , places:["lot","park","stream"] },
+    { key:"bird",     icon:"🐦", label:"참새", tier:"rare", hunger:0, fun:+30, affection:+22, weight:-3, risk:-1, exercise:true, msg:"참새를 사냥해 선물했다! 주인이 놀라며 좋아했다", msgUnadopted:"참새를 사냥했다. 자랑할 상대가 없어 조금 허전하다" , places:["park","stream"] },
     { key:"cash",     icon:"💵", label:"지폐", tier:"rare", hunger:0, fun:0, affection:+20, weight:0, risk:-1, mystery:true, msg:"...정체는 지폐였다! 주인이 어이없어하면서도 사랑스러워한다", msgUnadopted:"...정체는 지폐였다. 아직 주인이 없어 그냥 물고 다닐 뿐이다" , places:["market_st","market","alley"] },
     { key:"paper",    icon:"🧻", label:"폐지·휴지", tier:"common", hunger:0, fun:+2, affection:+6, weight:0, risk:0, mystery:true, msg:"...정체는 폐지였다. 쓸모는 없지만 귀엽다며 좋아한다", msgUnadopted:"...정체는 폐지였다. 딱히 쓸 곳은 없어 보인다" , places:["alley","market_st"] },
     { key:"pushy",    icon:"🧍", label:"들이대는 사람", tier:"uncommon", hunger:0, fun:+6, affection:0, weight:0, risk:+4, bad:true, msg:"낯선 사람이 억지로 만지려 해서 잔뜩 스트레스를 받았다" , places:["market","playground","market_st","housing"] },
@@ -1149,7 +1186,7 @@
   };
 
   // 먹이 창고 잭팟 아이템 (일반 츄르: 창고에서만 나온다)
-  const CHURU_ITEM = { key:"churu", icon:"🍭", label:"츄르", tier:"special", food:true, hunger:+36, fun:+14, affection:+4, weight:+2, risk:-3, msg:"🎉 잭팟! 창고 구석에서 츄르를 발견했다. 쭉쭉 짜 먹으니 천국이 따로 없다" };
+  const CHURU_ITEM = { key:"churu", icon:"🍭", label:"츄르", tier:"special", food:true, hunger:+36, fun:+20, affection:+4, weight:+2, risk:-3, msg:"🎉 잭팟! 창고 구석에서 츄르를 발견했다. 쭉쭉 짜 먹으니 천국이 따로 없다" };
 
   // 먹이 창고: 5개 중 대부분이 음식, 잭팟이면 츄르가 섞여 있다
   function makeStashItems(bold){
@@ -1288,6 +1325,7 @@
       tributeDays:0,      // 조공을 받으며 더 산 날수
       expectedDays:0,     // 조공 시작 전 예상 수명(일)
       extLeft:0,          // 왕의 연장 수명 남은 일수
+      tributeCount:0,     // 이번 생에 받은 조공 횟수
       loveStage:0,        // 연인 하트 단계 0~4
       carry:null,         // 연인에게 줄 선물을 물고 있는지
       lovebirds:false,    // 연인 퀘스트 완료(잉꼬 부부)
@@ -1939,8 +1977,9 @@
 
     let stageLabel = STAGES[state.stageIdx];
     if(state.turfRank > 0) stageLabel += " · " + TURF_RANK_NAMES[state.turfRank];
-    if(state.extLeft > 0) stageLabel += " · 👑 조공 " + (TRIBUTE_DAYS - state.extLeft) + "/" + TRIBUTE_DAYS;
+    if(state.turfRank >= 3 || state.extLeft > 0) stageLabel += " · 👑 조공 " + (state.tributeCount || 0) + "회" + (state.extLeft > 0 ? " (남은 " + state.extLeft + "일)" : "");
     stageBadge.textContent = stageLabel;
+    try{ renderTributeBoxes(-1); }catch(err){}
     const season = getSeason(state.day);
     dayCount.textContent = state.day + "일차 · " + season.icon + " " + ((SEASON_FOLLOWS_STAGE && state.stageIdx === STAGES.length - 1) ? "이듬해 " : "") + season.name;
 
@@ -2073,7 +2112,10 @@
       cell.textContent = here ? "\uD83D\uDC31" : (state.visited[loc.id] ? locDisplayIcon(loc) : "???");
       if(!here && !state.visited[loc.id]) cell.classList.add("unk");
       cell.title = state.visited[loc.id] ? locDisplayName(loc) : "???";
-      if(state.fireSearch){ cell.textContent = "\uD83C\uDF2B\uFE0F"; cell.style.background = "#DADBE6"; cell.title = "???"; }
+      if(state.fireSearch){
+        if(state.fireSearch.hint && loc.id === "home"){ cell.textContent = state.adopted ? "\uD83C\uDFE0" : "\uD83D\uDCE6"; cell.style.background = "#FFE9A8"; cell.title = state.adopted ? "집" : "보금자리"; cell.classList.add("seen"); cell.classList.remove("unk"); }
+        else { cell.textContent = "\uD83C\uDF2B\uFE0F"; cell.style.background = "#DADBE6"; cell.title = "???"; }
+      }
       minimapEl.appendChild(cell);
     });
   }
@@ -2425,8 +2467,8 @@
   // 받침에 맞는 조사 (을/를)
   function eulreul(w){ const c = w.charCodeAt(w.length - 1) - 0xAC00; return (c >= 0 && c < 11172 && c % 28 !== 0) ? "을" : "를"; }
   const HUNT_CFG = {
-    bug:  { name:"벌레", hits:2, time:7000,  speed:260, r:36, dart:[80,170],  pause:[0.18,0.5],  flee:false },
-    bird: { name:"참새", hits:3, time:8500,  speed:430, r:40, dart:[140,260], pause:[0.12,0.3],  flee:true  },
+    bug:  { name:"벌레", hits:3, miss:0, speed:170, r:38, dart:[60,140],  pause:[0.3,0.8],   flee:false, rule:"느려요 · 3번 공격하면 잡아요" },
+    bird: { name:"참새", hits:3, miss:2, speed:430, r:46, dart:[140,260], pause:[0.12,0.3],  flee:true,  rule:"빨라요 · 3번 공격해야 잡는데, 빗나감 2번이면 날아가 버려요" },
   };
   const huntOverlay = document.getElementById("hunt-overlay");
   const huntField = document.getElementById("hunt-field");
@@ -2436,18 +2478,21 @@
     state.minigame = true;
     Object.keys(keysDown).forEach(k=> keysDown[k] = false);
     document.getElementById("hunt-title").textContent = item.icon + " " + cfg.name + " 사냥!";
-    document.getElementById("hunt-sub").textContent = "움직이는 " + cfg.name + eulreul(cfg.name) + " 클릭해 발톱으로 공격하세요! (" + cfg.hits + "번 맞히면 잡아요)";
+    document.getElementById("hunt-sub").textContent = cfg.name + ": " + cfg.rule;
     document.getElementById("hunt-prey-ic").textContent = item.icon;
     huntField.style.background = ROOM_BG[state.currentLoc] || "#EDEAFB";
     huntField.querySelectorAll(".claw").forEach(c=> c.remove());
-    const bar = document.getElementById("hunt-timer-bar"), pips = document.getElementById("hunt-pips");
+    const pips = document.getElementById("hunt-pips");
     const W = huntField.clientWidth, H = huntField.clientHeight, M = 34;
     const prey = { x:W*(0.3+Math.random()*0.4), y:H*(0.3+Math.random()*0.4), tx:0, ty:0, wait:0.6, dir:1 };
     const ptr = { x:-999, y:-999 };
-    let hits = 0, over = false, last = performance.now(), elapsed = 0, raf = null;
+    let hits = 0, misses = 0, over = false, last = performance.now(), raf = null;
     const rnd = (a,b)=> a + Math.random()*(b-a);
     const clampPt = (v,lo,hi)=> Math.max(lo, Math.min(hi, v));
-    function drawPips(){ pips.innerHTML = Array.from({length:cfg.hits}, (_,i)=> `<span class="${i < hits ? "" : "off"}">🐾</span>`).join(""); }
+    function drawPips(){
+      pips.innerHTML = Array.from({length:cfg.hits}, (_,i)=> `<span class="${i < hits ? "" : "off"}">🐾</span>`).join("") +
+        (cfg.miss ? Array.from({length:cfg.miss}, (_,i)=> `<span class="miss${i < misses ? "" : " off"}">❌</span>`).join("") : "");
+    }
     function aim(awayFrom){
       let ang = Math.random()*Math.PI*2;
       if(awayFrom) ang = Math.atan2(prey.y - awayFrom.y, prey.x - awayFrom.x) + rnd(-0.7,0.7);
@@ -2481,7 +2526,10 @@
       const p = local(e); ptr.x = p.x; ptr.y = p.y;
       const hit = Math.hypot(p.x - prey.x, p.y - prey.y) < cfg.r;
       claw(p.x, p.y, !hit);
-      if(!hit) return;
+      if(!hit){
+        if(cfg.miss){ misses++; drawPips(); if(misses >= cfg.miss){ finish(false); } }
+        return;
+      }
       hits++; drawPips();
       huntPrey.classList.remove("hit"); void huntPrey.offsetWidth; huntPrey.classList.add("hit");
       huntField.classList.remove("shake"); void huntField.offsetWidth; huntField.classList.add("shake");
@@ -2490,9 +2538,7 @@
     };
     function frame(now){
       if(over) return;
-      const dt = Math.min(0.05, (now - last)/1000); last = now; elapsed += dt*1000;
-      bar.style.width = Math.max(0, 100 - elapsed/cfg.time*100) + "%";
-      if(elapsed >= cfg.time){ finish(false); return; }
+      const dt = Math.min(0.05, (now - last)/1000); last = now;
       if(prey.wait > 0){
         prey.wait -= dt;
         if(cfg.flee && Math.hypot(ptr.x - prey.x, ptr.y - prey.y) < 120){ prey.wait = 0; aim(ptr); }   // 참새는 커서가 다가오면 날아간다
@@ -2508,7 +2554,7 @@
       huntPrey.firstElementChild.style.transform = "scaleX(" + prey.dir + ")";
       raf = requestAnimationFrame(frame);
     }
-    drawPips(); bar.style.width = "100%";
+    drawPips();
     huntPrey.classList.remove("hit");
     huntPrey.style.left = prey.x + "px"; huntPrey.style.top = prey.y + "px";
     huntOverlay.classList.add("show"); setBackgroundInteractive(false);
@@ -2574,7 +2620,7 @@
       }, over ? 900 : 1500);
     }
     function onKey(e){
-      const m = { "1":"growl", "2":"stare", "3":"fight" }[e.key];
+      const m = { "1":"stare", "2":"growl", "3":"fight" }[e.key];
       if(m && duelOverlay.classList.contains("show")){ e.preventDefault(); pick(m); }
     }
     btns.forEach(b=> b.onclick = ()=> pick(b.dataset.move));
@@ -3238,16 +3284,17 @@
     housing:"🏘️ 비슷비슷한 집들뿐이다...", alley:"🐾 좁은 골목... 어디서 본 듯도 하다", market_st:"🏪 간판 불빛이 안개 속에서 번진다",
     lot:"🌾 풀숲 사이로 바람 소리만 들린다", road:"🚗 경적 소리에 귀가 멍멍하다", stream:"🌊 물소리뿐이다. 길이 막힌 것 같다",
   };
-  function startFireSearch(){
+  function startFireSearch(hint, keepToast){
     const d = distMapTo("home");
     const maxd = Math.max.apply(null, Object.values(d)), need = Math.min(3, maxd);
     const cands = Object.keys(d).filter(id=> d[id] >= need);
     const start = cands[Math.floor(Math.random()*cands.length)];
-    state.fireSearch = { steps:0, dist:d[start], d };
+    state.fireSearch = { steps:0, dist:d[start], d, hint:!!hint };
     enterRoom(start);              // 방향 없이 진입 → 이동 비용 없음
     state.roomObjects = [];        // 정신없는 중이라 물건은 눈에 들어오지 않는다
     renderLocBadge(); renderAll();
-    showToast("😵 연기 때문에 눈앞이 뿌옇다... 익숙한 냄새를 따라가 보자");
+    if(!keepToast) showToast("😵 연기 때문에 눈앞이 뿌옇다... 익숙한 냄새를 따라가 보자");
+    else setTimeout(()=> showToast(hint ? "🧭 고양이가 알려준 대로 지도의 집 표시를 따라가 보자" : "😵 연기 때문에 눈앞이 뿌옇다... 익숙한 냄새를 따라가 보자"), 1700);
   }
   function onFireSearchStep(locId){
     const fs = state.fireSearch; fs.steps++;
@@ -3393,8 +3440,8 @@
         title = "낯선 고양이와의 만남";
         desc = "지나가던 고양이에게 다가가 조심스레 길을 물었다.";
         opts = [
-          { label:"그냥 알려달라고 한다", sub:"밑져야 본전", eff:{risk:+10, fun:-6}, score:-1, resultMsg:"...얻어맞았다 ㅜㅠ" },
-          { label:"음식을 나눠주고 길안내를 부탁한다", sub:"가진 것을 나눈다", eff:{hunger:-8, risk:-8}, score:+1, resultMsg:"길을 안내받는 데 성공했다!" },
+          { label:"그냥 알려달라고 한다", sub:"밑져야 본전 · 집 위치를 모른 채 헤맨다", eff:{risk:+10, fun:-6}, score:-1, resultMsg:"...얻어맞았다 ㅜㅠ", detour:true, askSearch:true, hint:false },
+          { label:"음식을 나눠주고 길안내를 부탁한다", sub:"가진 것을 나눈다 · 지도에 집 위치를 알려준다", eff:{hunger:-8, risk:-8}, score:+1, resultMsg:"길을 안내받는 데 성공했다! 지도에 집 위치가 표시됐다", detour:true, askSearch:true, hint:true },
         ];
       } else {
         title = "낯선 골목 탐색";
@@ -3463,6 +3510,16 @@
 
   function resolveFireOption(opt){
     if(!state.fireEvent) return;
+    if(opt.detour && opt.askSearch){      // 낯선 고양이에게 길을 물은 뒤: 안개 속 집 찾기 (밥을 나눴으면 미니맵에 집 위치가 보인다)
+      const before = snapStats();
+      if(opt.eff) applyEffToState(opt.eff);
+      showDeltas(before);
+      pushHistory({kind:"choice", flavor:{title:"화재 사건"}, opt}, before);
+      if(opt.score) state.fireEvent.score += opt.score;
+      if(opt.resultMsg) showToast(opt.resultMsg);
+      startFireSearch(!!opt.hint, true);
+      return;
+    }
     if(opt.detour){ if(opt.eff) applyEffToState(opt.eff); startFireSearch(); return; }
     if(opt.road){ startRoadGame(); return; }
     const before = snapStats();
@@ -3522,19 +3579,48 @@
     "🧶 털실 공이 조공으로 도착했다", "🍗 닭고기 한 점이 바쳐졌다", "🌿 캣그라스가 한 아름 도착했다",
     "🥫 고급 캔이 줄지어 올라왔다", "🪶 깃털 장난감이 바쳐졌다", "🦐 새우 한 접시가 도착했다", "💐 꽃다발이 조공으로 도착했다",
   ];
+  const TRIBUTE_ITEMS = [
+    {icon:"🐟",name:"생선"},{icon:"🐦",name:"참새"},{icon:"🥛",name:"우유"},{icon:"🧶",name:"털실 공"},{icon:"🍗",name:"닭고기"},
+    {icon:"🌿",name:"캣그라스"},{icon:"🥫",name:"고급 캔"},{icon:"🪶",name:"깃털 장난감"},{icon:"🦐",name:"새우"},{icon:"💐",name:"꽃다발"},
+  ];
+  const TRIBUTE_SAVE_KEY = "catroad_tributes_v1";
+  const gotTributes = new Set();
+  try{ JSON.parse(localStorage.getItem(TRIBUTE_SAVE_KEY) || "[]").forEach(n=>{ if(n >= 0 && n < TRIBUTE_ITEMS.length) gotTributes.add(n); }); }catch(err){}
+  function saveTributes(){ try{ localStorage.setItem(TRIBUTE_SAVE_KEY, JSON.stringify([...gotTributes])); }catch(err){} }
+  function renderTributeChips(el, fresh){
+    if(!el) return;
+    el.innerHTML = TRIBUTE_ITEMS.map((t,i)=> gotTributes.has(i)
+      ? `<span class="tchip${i === fresh ? " new" : ""}">${t.icon} ${t.name}</span>`
+      : `<span class="tchip q" title="아직 못 받았어요">❓ ？？？</span>`).join("");
+  }
+  function renderTributeBoxes(fresh){
+    renderTributeChips(document.getElementById("op-tribute-chips"), -1);
+    renderTributeChips(document.getElementById("dex-tribute-chips"), -1);
+    const cnt = gotTributes.size + " / " + TRIBUTE_ITEMS.length;
+    document.getElementById("dex-tribute-count").textContent = "· " + cnt;
+    const box = document.getElementById("tribute-box");
+    const show = !!state && (state.turfRank >= 3 || state.extLeft > 0);
+    box.style.display = show ? "" : "none";
+    if(show){ document.getElementById("tribute-count").textContent = "· 수집 " + cnt + " · 이번에 받은 횟수 " + (state.tributeCount || 0) + "회"; renderTributeChips(document.getElementById("tribute-chips"), fresh); }
+  }
   let lastTribute = -1;
+  window.addEventListener("load", ()=>{ try{ renderTributeBoxes(-1); }catch(err){} });
   // 왕이 되면 하루가 지날 때마다 조공이 한 번씩 도착한다
   function receiveTribute(){
     if(!state || state.gameOver) return;
     let n; do{ n = Math.floor(Math.random() * TRIBUTES.length); }while(n === lastTribute);
     lastTribute = n;
+    state.tributeCount = (state.tributeCount || 0) + 1;
+    const isNewTribute = !gotTributes.has(n);
+    gotTributes.add(n); saveTributes();
     const before = snapStats();
     state.hunger = clamp(state.hunger + 5 + Math.random() * 4);
     state.fun = clamp(state.fun + 3 + Math.random() * 3);
     state.risk = Math.max(0, state.risk - 2);
-    showToast("👑 오늘의 조공 · " + TRIBUTES[n]);
+    showToast("👑 오늘의 조공 · " + TRIBUTES[n] + (isNewTribute ? " ✨NEW" : ""));
     showDeltas(before);
     renderAll();
+    renderTributeBoxes(isNewTribute ? n : -1);
   }
   function beginEnding(){
     if(state.turfRank >= 3 && !state.tributeDone){ startKingExtension(); return; }
@@ -3672,7 +3758,7 @@
     dexCount.textContent = `총 ${ENDING_CATALOG.length}가지 결말 · 수집 ${discoveredEndings.size} / ${ENDING_CATALOG.length}`;
   }
   function openDex(){
-    renderDex();
+    renderDex(); renderTributeBoxes(-1);
     dexOverlay.classList.add("show");
     setBackgroundInteractive(false);
   }
@@ -3686,7 +3772,7 @@
   document.getElementById("end-dex-btn").addEventListener("click", openDex);
   document.getElementById("dex-reset-btn").addEventListener("click", ()=>{
     if(!confirm("수집한 엔딩 기록을 모두 지울까요?")) return;
-    discoveredEndings.clear(); newEndings.clear(); saveEndings(); renderDex();
+    discoveredEndings.clear(); newEndings.clear(); saveEndings(); gotTributes.clear(); saveTributes(); renderDex(); renderTributeBoxes(-1);
   });
   window.addEventListener("keydown", e=>{
     if(e.key === "Escape" && dexOverlay.classList.contains("show")){ e.preventDefault(); closeDex(); }
@@ -3796,6 +3882,7 @@
     try{ $("op-end-n").textContent = ENDING_CATALOG.length; }catch(e){}
 
     /* --- 장면 전환 --- */
+    window.__opGo = go;
     function go(name){
       cur = name;
       Object.keys(scenes).forEach(k => scenes[k].classList.toggle("on", k === name));
@@ -3844,6 +3931,20 @@
     });
   })();
 
+  // 상단 왼쪽 제목(묘적)을 누르면 맨 처음 오프닝 화면으로 돌아간다
+  function goHome(){
+    if(state && state.running && !state.gameOver && !confirm("처음 화면으로 돌아갈까요? 진행 중인 여정은 사라져요.")) return;
+    if(state){ state.running = false; state.minigame = false; }
+    try{ resetEventQueue(); }catch(err){}
+    [endOverlay, dexOverlay].forEach(o=> o && o.classList.remove("show"));
+    try{ document.getElementById("end-fade").classList.remove("on"); }catch(err){}
+    startOverlay.classList.remove("gone"); void startOverlay.offsetWidth; startOverlay.classList.add("show");
+    window.__opGo("title");
+    setBackgroundInteractive(false);
+  }
+  const homeTitle = document.getElementById("home-title");
+  homeTitle.addEventListener("click", goHome);
+  homeTitle.addEventListener("keydown", e=>{ if(e.key === "Enter"){ e.preventDefault(); goHome(); } });
   startBtn.addEventListener("click", startGame);
   restartBtn.addEventListener("click", startGame);
 
